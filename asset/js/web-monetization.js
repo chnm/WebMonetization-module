@@ -1,3 +1,27 @@
+const WebMonetization = {
+
+    siteId: null,
+    paymentPointer: null,
+    monetizationTag: null,
+
+    // Add the web monetization meta tag to the head.
+    addMonetizationTag: () => {
+        if (!WebMonetization.monetizationTag) {
+            // Create the tag if not already created.
+            monetizationTag = document.createElement('meta');
+            monetizationTag.setAttribute('name', 'monetization');
+            monetizationTag.setAttribute('content', WebMonetization.paymentPointer);
+        }
+        document.head.appendChild(monetizationTag);
+        WebMonetization.monetizationTag = monetizationTag;
+    },
+
+    // Remove the web monetization meta tag from the head.
+    removeMonetizationTag: () => {
+        WebMonetization.monetizationTag.remove();
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
 
     const startButton = document.querySelectorAll('.web-monetization-start');
@@ -8,27 +32,20 @@ document.addEventListener('DOMContentLoaded', function() {
     stopButton.forEach(el => el.style.display = 'none');
     notEnabledSpan.forEach(el => el.style.display = 'none');
 
-    let monetizationTag;
-    const setMonetizationTag = (paymentPointer) => {
-        monetizationTag = document.createElement('meta');
-        monetizationTag.setAttribute('name', 'monetization');
-        monetizationTag.setAttribute('content', paymentPointer);
-        document.head.appendChild(monetizationTag);
-    };
-    const startMonetization = (paymentPointer) => {
-        setMonetizationTag(paymentPointer);
+    const startMonetization = () => {
+        WebMonetization.addMonetizationTag();
         startButton.forEach(el => el.style.display = 'none');
         stopButton.forEach(el => el.style.display = 'inline');
     }
     const stopMonetization = () => {
-        monetizationTag.remove();
+        WebMonetization.removeMonetizationTag();
         startButton.forEach(el => el.style.display = 'inline');
         stopButton.forEach(el => el.style.display = 'none');
     };
 
     document.addEventListener('click', e => {
         if (e.target.classList.contains('web-monetization-start')) {
-            startMonetization(e.target.dataset.paymentPointer);
+            startMonetization();
         }
     });
     document.addEventListener('click', e => {
