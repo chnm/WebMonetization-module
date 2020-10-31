@@ -3,6 +3,7 @@ const WebMonetization = {
     siteId: null,
     paymentPointer: null,
     monetizationTag: null,
+    monetizedSites: null,
 
     // Add the web monetization meta tag to the head.
     addMonetizationTag: () => {
@@ -19,47 +20,52 @@ const WebMonetization = {
     // Remove the web monetization meta tag from the head.
     removeMonetizationTag: () => {
         WebMonetization.monetizationTag.remove();
+    },
+
+    // Get the sites that are monetized.
+    getMonetizedSites: () => {
+        if (Array.isArray(WebMonetization.monetizedSites)) {
+            return WebMonetization.monetizedSites;
+        }
+        let monetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization'));
+        if (!Array.isArray(monetizedSites)) {
+             monetizedSites = [];
+        }
+        WebMonetization.monetizedSites = monetizedSites;
+        return monetizedSites;
+    },
+
+    // Is the current site monetized?
+    siteIsMonetized: () => {
+        return WebMonetization.getMonetizedSites().includes(WebMonetization.siteId);
+    },
+
+    // Monetize this site.
+    monetizeSite: () => {
+        WebMonetization.addMonetizationTag();
+        if (!WebMonetization.siteIsMonetized()) {
+            const monetizedSites = WebMonetization.getMonetizedSites();
+            monetizedSites.push(WebMonetization.siteId);
+            localStorage.setItem('omeka_web_monetization', JSON.stringify(monetizedSites));
+        }
+    },
+
+    // Un-monetize this site.
+    unmonetizeSite: () => {
+        WebMonetization.removeMonetizationTag();
+        if (WebMonetization.siteIsMonetized()) {
+            const monetizedSites = WebMonetization.getMonetizedSites();
+            monetizedSites.splice(monetizedSites.indexOf(WebMonetization.siteId), 1);
+            localStorage.setItem('omeka_web_monetization', JSON.stringify(monetizedSites));
+        }
     }
 };
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    const startButton = document.querySelectorAll('.web-monetization-start');
-    const stopButton = document.querySelectorAll('.web-monetization-stop');
-    const notEnabledSpan = document.querySelectorAll('.web-monetization-disabled');
-
-    startButton.forEach(el => el.style.display = 'none');
-    stopButton.forEach(el => el.style.display = 'none');
-    notEnabledSpan.forEach(el => el.style.display = 'none');
-
-    const startMonetization = () => {
-        WebMonetization.addMonetizationTag();
-        startButton.forEach(el => el.style.display = 'none');
-        stopButton.forEach(el => el.style.display = 'inline');
-    }
-    const stopMonetization = () => {
-        WebMonetization.removeMonetizationTag();
-        startButton.forEach(el => el.style.display = 'inline');
-        stopButton.forEach(el => el.style.display = 'none');
-    };
-
-    document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-start')) {
-            startMonetization();
-        }
-    });
-    document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-stop')) {
-            stopMonetization();
-        }
-    });
-
-    if (document.monetization) {
-        // The client has web monetization enabled.
-        startButton.forEach(el => el.style.display = 'inline');
-    } else {
-        // The client does not have web monetization enabled.
-        notEnabledSpan.forEach(el => el.style.display = 'inline');
+    if (document.monetization && WebMonetization.siteIsMonetized()) {
+        // The client has web monetization enabled, and the user monetized the site.
+        WebMonetization.monetizeSite();
     }
 
     // This stuff is not required.
@@ -86,4 +92,5 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(formatted);
         });
     }
+
 });
