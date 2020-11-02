@@ -55,6 +55,7 @@ class Module extends AbstractModule
             ],
             'attributes' => [
                 'value' => $form->getSiteSettings()->get('web_monetization_payment_pointer'),
+                'pattern' => '^\$.+',
             ],
         ]);
     }
