@@ -58,31 +58,23 @@ const WebMonetization = {
             monetizedSites.splice(monetizedSites.indexOf(WebMonetization.siteId), 1);
             localStorage.setItem('omeka_web_monetization', JSON.stringify(monetizedSites));
         }
-    }
-};
+    },
 
-document.addEventListener('DOMContentLoaded', function() {
-
-    if (document.monetization && WebMonetization.siteIsMonetized()) {
-        // The client has web monetization enabled, and the user monetized the site.
-        WebMonetization.monetizeSite();
-    }
-
-    // This stuff is not required.
-    if (document.monetization) {
+    // Initialize testing. Use this function for testing purposes only.
+    initTesting: () => {
         document.monetization.addEventListener('monetizationstop', e => {
-            console.log(document.monetization.state);
+            console.log(document.monetization.state, e);
         });
         document.monetization.addEventListener('monetizationpending', e => {
-            console.log(document.monetization.state);
+            console.log(document.monetization.state, e);
         });
         document.monetization.addEventListener('monetizationstart', e => {
-            console.log(document.monetization.state);
+            console.log(document.monetization.state, e);
         });
         let scale;
         let total = 0;
         document.monetization.addEventListener('monetizationprogress', e => {
-            console.log(document.monetization.state);
+            console.log(document.monetization.state, e);
             if (total === 0) {
                 scale = e.detail.assetScale;
                 console.log(e.detail.assetCode);
@@ -92,5 +84,14 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(formatted);
         });
     }
+};
 
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.monetization && WebMonetization.siteIsMonetized()) {
+        // The user monetized the site and the client has web monetization enabled.
+        WebMonetization.monetizeSite();
+    }
+    if (document.monetization) {
+        WebMonetization.initTesting();
+    }
 });
