@@ -88,14 +88,6 @@ const WebMonetization = {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    if (document.monetization && WebMonetization.siteIsMonetized()) {
-        // The user monetized the site and the client has web monetization enabled.
-        WebMonetization.monetizeSite();
-    }
-    if (document.monetization) {
-        WebMonetization.initTesting();
-    }
-
     const startButton = document.querySelectorAll('.web-monetization-start');
     const stopButton = document.querySelectorAll('.web-monetization-stop');
     const notEnabledSpan = document.querySelectorAll('.web-monetization-disabled');
@@ -126,15 +118,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    if (document.monetization && WebMonetization.siteIsMonetized()) {
+        // The site is monetized and the client has web monetization enabled.
+        WebMonetization.monetizeSite();
+    }
     if (document.monetization) {
-        // The client has web monetization enabled.
+         // The site is monetized.
+        WebMonetization.initTesting();
+    }
+
+    if (document.monetization) {
+        // The site is monetized.
         if (WebMonetization.siteIsMonetized()) {
+            // The client has web monetization enabled.
             stopButton.forEach(el => el.style.display = 'inline');
         } else {
+            // The client does not have web monetization enabled.
             startButton.forEach(el => el.style.display = 'inline');
         }
     } else {
-        // The client does not have web monetization enabled.
+        // The site is not monetized.
         notEnabledSpan.forEach(el => el.style.display = 'inline');
     }
 });

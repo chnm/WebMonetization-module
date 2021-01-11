@@ -13,7 +13,7 @@ class WebMonetization extends AbstractHelper
         $this->services = $services;
     }
 
-    public function startStopControl()
+    public function control()
     {
         $view = $this->getView();
         return sprintf(
