@@ -21,4 +21,9 @@ return [
             'web_monetization' => BlockLayout\WebMonetization::class,
         ],
     ],
+    'view_helpers' => [
+        'factories' => [
+            'webMonetization' => Service\ViewHelper\WebMonetizationFactory::class,
+        ],
+    ],
 ];

@@ -20,15 +20,6 @@ class WebMonetization extends AbstractBlockLayout
         return $this->getLabel();
     }
 
-    public function prepareRender(PhpRenderer $view)
-    {
-        $paymentPointer = $view->siteSetting('web_monetization_payment_pointer');
-        if (!$paymentPointer) {
-            return;
-        }
-        $view->headScript()->appendFile($view->assetUrl('js/web-monetization-block.js', 'WebMonetization'));
-    }
-
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
         $paymentPointer = $view->siteSetting('web_monetization_payment_pointer');
