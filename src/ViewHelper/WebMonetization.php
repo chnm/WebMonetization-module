@@ -16,6 +16,10 @@ class WebMonetization extends AbstractHelper
     public function control()
     {
         $view = $this->getView();
+        $paymentPointer = $view->siteSetting('web_monetization_payment_pointer');
+        if (!$paymentPointer) {
+            return;
+        }
         return sprintf(
             '<div class="web-monetization">
                 <button class="web-monetization-start">%s</button>

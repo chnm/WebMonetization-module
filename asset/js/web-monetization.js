@@ -2,8 +2,10 @@ const WebMonetization = {
 
     siteId: null,
     paymentPointer: null,
+    monetizeByDefault: false,
     monetizationTag: null,
     monetizedSites: null,
+    unmonetizedSites: null,
 
     // Add the web monetization meta tag to the head.
     addMonetizationTag: () => {
@@ -22,12 +24,12 @@ const WebMonetization = {
         WebMonetization.monetizationTag.remove();
     },
 
-    // Get the sites that are monetized.
+    // Get the sites where monetization has been enabled by the client.
     getMonetizedSites: () => {
         if (Array.isArray(WebMonetization.monetizedSites)) {
             return WebMonetization.monetizedSites;
         }
-        let monetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization'));
+        let monetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization_monetized_sites'));
         if (!Array.isArray(monetizedSites)) {
              monetizedSites = [];
         }
@@ -35,9 +37,32 @@ const WebMonetization = {
         return monetizedSites;
     },
 
+    // Get the sites where monetization has been disabled by the client.
+    getUnmonetizedSites: () => {
+        if (Array.isArray(WebMonetization.unmonetizedSites)) {
+            return WebMonetization.unmonetizedSites;
+        }
+        let unmonetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization_unmonetized_sites'));
+        if (!Array.isArray(unmonetizedSites)) {
+             unmonetizedSites = [];
+        }
+        WebMonetization.unmonetizedSites = unmonetizedSites;
+        return unmonetizedSites;
+    },
+
     // Is the current site monetized?
     siteIsMonetized: () => {
+        if (WebMonetization.monetizeByDefault && !WebMonetization.siteIsUnmonetized()) {
+            // Here we return true because WebMonetization is configured to
+            // monetize by default and the client hasn't disabled monetization.
+            return true;
+        }
         return WebMonetization.getMonetizedSites().includes(WebMonetization.siteId);
+    },
+
+    // Is the current site unmonetized?
+    siteIsUnmonetized: () => {
+        return WebMonetization.getUnmonetizedSites().includes(WebMonetization.siteId);
     },
 
     // Monetize this site.
@@ -46,7 +71,12 @@ const WebMonetization = {
         if (!WebMonetization.siteIsMonetized()) {
             const monetizedSites = WebMonetization.getMonetizedSites();
             monetizedSites.push(WebMonetization.siteId);
-            localStorage.setItem('omeka_web_monetization', JSON.stringify(monetizedSites));
+            localStorage.setItem('omeka_web_monetization_monetized_sites', JSON.stringify(monetizedSites));
+        }
+        if (WebMonetization.siteIsUnmonetized()) {
+            const unmonetizedSites = WebMonetization.getUnmonetizedSites();
+            unmonetizedSites.splice(unmonetizedSites.indexOf(WebMonetization.siteId), 1);
+            localStorage.setItem('omeka_web_monetization_unmonetized_sites', JSON.stringify(unmonetizedSites));
         }
     },
 
@@ -56,7 +86,12 @@ const WebMonetization = {
         if (WebMonetization.siteIsMonetized()) {
             const monetizedSites = WebMonetization.getMonetizedSites();
             monetizedSites.splice(monetizedSites.indexOf(WebMonetization.siteId), 1);
-            localStorage.setItem('omeka_web_monetization', JSON.stringify(monetizedSites));
+            localStorage.setItem('omeka_web_monetization_monetized_sites', JSON.stringify(monetizedSites));
+        }
+        if (!WebMonetization.siteIsUnmonetized()) {
+            const unmonetizedSites = WebMonetization.getUnmonetizedSites();
+            unmonetizedSites.push(WebMonetization.siteId);
+            localStorage.setItem('omeka_web_monetization_unmonetized_sites', JSON.stringify(unmonetizedSites));
         }
     },
 
@@ -118,26 +153,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    if (document.monetization && WebMonetization.siteIsMonetized()) {
-        // The site is monetized and the client has web monetization enabled.
-        WebMonetization.monetizeSite();
-    }
-    if (document.monetization) {
-         // The site is monetized.
-        WebMonetization.initTesting();
-    }
-
     if (document.monetization) {
         // The site is monetized.
+        WebMonetization.initTesting();
         if (WebMonetization.siteIsMonetized()) {
-            // The client has web monetization enabled.
+            WebMonetization.monetizeSite();
             stopButton.forEach(el => el.style.display = 'inline');
         } else {
-            // The client does not have web monetization enabled.
             startButton.forEach(el => el.style.display = 'inline');
         }
     } else {
-        // The site is not monetized.
         notEnabledSpan.forEach(el => el.style.display = 'inline');
     }
 });

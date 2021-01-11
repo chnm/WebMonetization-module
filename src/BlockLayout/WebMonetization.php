@@ -22,10 +22,6 @@ class WebMonetization extends AbstractBlockLayout
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
-        $paymentPointer = $view->siteSetting('web_monetization_payment_pointer');
-        if (!$paymentPointer) {
-            return;
-        }
         return $view->webMonetization()->control();
     }
 }
