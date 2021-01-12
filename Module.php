@@ -60,12 +60,12 @@ class Module extends AbstractModule
         ]);
         $form->get('web_monetization')->add([
             'type' => 'checkbox',
-            'name' => 'web_monetization_monetize_by_default',
+            'name' => 'web_monetization_enable_by_default',
             'options' => [
-                'label' => 'Monetize by default'
+                'label' => 'Enable by default'
             ],
             'attributes' => [
-                'value' => $form->getSiteSettings()->get('web_monetization_monetize_by_default'),
+                'value' => $form->getSiteSettings()->get('web_monetization_enable_by_default'),
             ],
         ]);
     }
@@ -79,10 +79,10 @@ class Module extends AbstractModule
         }
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization.js', 'WebMonetization'));
         $view->headScript()->appendScript(sprintf(
-            'WebMonetization.siteId = %s; WebMonetization.paymentPointer = "%s"; WebMonetization.monetizeByDefault = %s;',
+            'WebMonetization.siteId = %s; WebMonetization.paymentPointer = "%s"; WebMonetization.enableByDefault = %s;',
             $view->escapeJs($view->layout()->site->id()),
             $view->escapeJs($paymentPointer),
-            $view->escapeJs($view->siteSetting('web_monetization_monetize_by_default') ? 'true' : 'false')
+            $view->escapeJs($view->siteSetting('web_monetization_enable_by_default') ? 'true' : 'false')
         ));
     }
 }

@@ -2,10 +2,10 @@ const WebMonetization = {
 
     siteId: null,
     paymentPointer: null,
-    monetizeByDefault: false,
+    enableByDefault: false,
     monetizationTag: null,
-    monetizedSites: null,
-    unmonetizedSites: null,
+    enabledSites: null,
+    disabledSites: null,
 
     // Add the web monetization meta tag to the head.
     addMonetizationTag: () => {
@@ -25,73 +25,73 @@ const WebMonetization = {
     },
 
     // Get the sites where monetization has been enabled by the client.
-    getMonetizedSites: () => {
-        if (Array.isArray(WebMonetization.monetizedSites)) {
-            return WebMonetization.monetizedSites;
+    getEnabledSites: () => {
+        if (Array.isArray(WebMonetization.enabledSites)) {
+            return WebMonetization.enabledSites;
         }
-        let monetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization_monetized_sites'));
-        if (!Array.isArray(monetizedSites)) {
-             monetizedSites = [];
+        let enabledSites = JSON.parse(localStorage.getItem('omeka_web_monetization_enabled_sites'));
+        if (!Array.isArray(enabledSites)) {
+             enabledSites = [];
         }
-        WebMonetization.monetizedSites = monetizedSites;
-        return monetizedSites;
+        WebMonetization.enabledSites = enabledSites;
+        return enabledSites;
     },
 
     // Get the sites where monetization has been disabled by the client.
-    getUnmonetizedSites: () => {
-        if (Array.isArray(WebMonetization.unmonetizedSites)) {
-            return WebMonetization.unmonetizedSites;
+    getDisabledSites: () => {
+        if (Array.isArray(WebMonetization.disabledSites)) {
+            return WebMonetization.disabledSites;
         }
-        let unmonetizedSites = JSON.parse(localStorage.getItem('omeka_web_monetization_unmonetized_sites'));
-        if (!Array.isArray(unmonetizedSites)) {
-             unmonetizedSites = [];
+        let disabledSites = JSON.parse(localStorage.getItem('omeka_web_monetization_disabled_sites'));
+        if (!Array.isArray(disabledSites)) {
+             disabledSites = [];
         }
-        WebMonetization.unmonetizedSites = unmonetizedSites;
-        return unmonetizedSites;
+        WebMonetization.disabledSites = disabledSites;
+        return disabledSites;
     },
 
-    // Is the current site monetized?
-    siteIsMonetized: () => {
-        if (WebMonetization.monetizeByDefault && !WebMonetization.siteIsUnmonetized()) {
-            // Here we return true because WebMonetization is configured to
-            // monetize by default and the client hasn't disabled monetization.
+    // Is the current site enabled?
+    siteIsEnabled: () => {
+        if (WebMonetization.enableByDefault && !WebMonetization.siteIsDisabled()) {
+            // Here we return true because monetization is enabled by default
+            // and the client hasn't already disabled monetization.
             return true;
         }
-        return WebMonetization.getMonetizedSites().includes(WebMonetization.siteId);
+        return WebMonetization.getEnabledSites().includes(WebMonetization.siteId);
     },
 
-    // Is the current site unmonetized?
-    siteIsUnmonetized: () => {
-        return WebMonetization.getUnmonetizedSites().includes(WebMonetization.siteId);
+    // Is the current site disabled?
+    siteIsDisabled: () => {
+        return WebMonetization.getDisabledSites().includes(WebMonetization.siteId);
     },
 
-    // Monetize this site.
-    monetizeSite: () => {
+    // Enable this site.
+    enableSite: () => {
         WebMonetization.addMonetizationTag();
-        if (!WebMonetization.siteIsMonetized()) {
-            const monetizedSites = WebMonetization.getMonetizedSites();
-            monetizedSites.push(WebMonetization.siteId);
-            localStorage.setItem('omeka_web_monetization_monetized_sites', JSON.stringify(monetizedSites));
+        if (!WebMonetization.siteIsEnabled()) {
+            const enabledSites = WebMonetization.getEnabledSites();
+            enabledSites.push(WebMonetization.siteId);
+            localStorage.setItem('omeka_web_monetization_enabled_sites', JSON.stringify(enabledSites));
         }
-        if (WebMonetization.siteIsUnmonetized()) {
-            const unmonetizedSites = WebMonetization.getUnmonetizedSites();
-            unmonetizedSites.splice(unmonetizedSites.indexOf(WebMonetization.siteId), 1);
-            localStorage.setItem('omeka_web_monetization_unmonetized_sites', JSON.stringify(unmonetizedSites));
+        if (WebMonetization.siteIsDisabled()) {
+            const disabledSites = WebMonetization.getDisabledSites();
+            disabledSites.splice(disabledSites.indexOf(WebMonetization.siteId), 1);
+            localStorage.setItem('omeka_web_monetization_disabled_sites', JSON.stringify(disabledSites));
         }
     },
 
-    // Un-monetize this site.
-    unmonetizeSite: () => {
+    // Disable this site.
+    disableSite: () => {
         WebMonetization.removeMonetizationTag();
-        if (WebMonetization.siteIsMonetized()) {
-            const monetizedSites = WebMonetization.getMonetizedSites();
-            monetizedSites.splice(monetizedSites.indexOf(WebMonetization.siteId), 1);
-            localStorage.setItem('omeka_web_monetization_monetized_sites', JSON.stringify(monetizedSites));
+        if (WebMonetization.siteIsEnabled()) {
+            const enabledSites = WebMonetization.getEnabledSites();
+            enabledSites.splice(enabledSites.indexOf(WebMonetization.siteId), 1);
+            localStorage.setItem('omeka_web_monetization_enabled_sites', JSON.stringify(enabledSites));
         }
-        if (!WebMonetization.siteIsUnmonetized()) {
-            const unmonetizedSites = WebMonetization.getUnmonetizedSites();
-            unmonetizedSites.push(WebMonetization.siteId);
-            localStorage.setItem('omeka_web_monetization_unmonetized_sites', JSON.stringify(unmonetizedSites));
+        if (!WebMonetization.siteIsDisabled()) {
+            const disabledSites = WebMonetization.getDisabledSites();
+            disabledSites.push(WebMonetization.siteId);
+            localStorage.setItem('omeka_web_monetization_disabled_sites', JSON.stringify(disabledSites));
         }
     },
 
@@ -132,12 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
     notEnabledSpan.forEach(el => el.style.display = 'none');
 
     const startMonetization = () => {
-        WebMonetization.monetizeSite();
+        WebMonetization.enableSite();
         startButton.forEach(el => el.style.display = 'none');
         stopButton.forEach(el => el.style.display = 'inline');
     }
     const stopMonetization = () => {
-        WebMonetization.unmonetizeSite();
+        WebMonetization.disableSite();
         startButton.forEach(el => el.style.display = 'inline');
         stopButton.forEach(el => el.style.display = 'none');
     };
@@ -156,13 +156,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.monetization) {
         // The site is monetized.
         WebMonetization.initTesting();
-        if (WebMonetization.siteIsMonetized()) {
-            WebMonetization.monetizeSite();
+        if (WebMonetization.siteIsEnabled()) {
+            WebMonetization.enableSite();
             stopButton.forEach(el => el.style.display = 'inline');
         } else {
             startButton.forEach(el => el.style.display = 'inline');
         }
     } else {
+        // The site is not monetized.
         notEnabledSpan.forEach(el => el.style.display = 'inline');
     }
 });
