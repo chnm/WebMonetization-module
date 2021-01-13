@@ -1,22 +1,31 @@
-// Initialize web monetization.
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.monetization) {
-        // Uncomment this to initialize testing.
-        //~ WebMonetization.initTesting();
-    }
-    if (document.monetization && WebMonetization.siteIsEnabled()) {
-        WebMonetization.enableSite();
-    }
+    WebMonetization.init();
 });
 
 const WebMonetization = {
 
+    // The current site ID
     siteId: null,
+    // The configured payment pointer
     paymentPointer: null,
+    // Whether to enble payment by default
     enableByDefault: false,
+    // The monetization meta tag
     monetizationTag: null,
+    // An array of site IDs where payment has been enabled
     enabledSites: null,
+    // An array of site IDs where payment has been disabled
     disabledSites: null,
+
+    // Initialize web monetization.
+    init: () => {
+        if (document.monetization) {
+            // WebMonetization.initTesting(); // uncomment to init testing
+        }
+        if (document.monetization && WebMonetization.siteIsEnabled()) {
+            WebMonetization.enablePayment();
+        }
+    },
 
     // Add the web monetization meta tag to the head.
     addMonetizationTag: () => {
@@ -35,7 +44,7 @@ const WebMonetization = {
         WebMonetization.monetizationTag.remove();
     },
 
-    // Get the sites where monetization has been enabled by the client.
+    // Get the sites where payment has been enabled by the client.
     getEnabledSites: () => {
         if (Array.isArray(WebMonetization.enabledSites)) {
             return WebMonetization.enabledSites;
@@ -48,7 +57,7 @@ const WebMonetization = {
         return enabledSites;
     },
 
-    // Get the sites where monetization has been disabled by the client.
+    // Get the sites where payment has been disabled by the client.
     getDisabledSites: () => {
         if (Array.isArray(WebMonetization.disabledSites)) {
             return WebMonetization.disabledSites;
@@ -61,23 +70,23 @@ const WebMonetization = {
         return disabledSites;
     },
 
-    // Is the current site enabled?
+    // Is the current site enabled for payment?
     siteIsEnabled: () => {
         if (WebMonetization.enableByDefault && !WebMonetization.siteIsDisabled()) {
-            // Here we return true because monetization is enabled by default
-            // and the client hasn't already disabled monetization.
+            // Here we return true because payment is enabled by default and the
+            // client hasn't already disabled payment.
             return true;
         }
         return WebMonetization.getEnabledSites().includes(WebMonetization.siteId);
     },
 
-    // Is the current site disabled?
+    // Is the current site disabled for payment?
     siteIsDisabled: () => {
         return WebMonetization.getDisabledSites().includes(WebMonetization.siteId);
     },
 
-    // Enable this site.
-    enableSite: () => {
+    // Enable payment on this site.
+    enablePayment: () => {
         WebMonetization.addMonetizationTag();
         if (!WebMonetization.siteIsEnabled()) {
             const enabledSites = WebMonetization.getEnabledSites();
@@ -91,8 +100,8 @@ const WebMonetization = {
         }
     },
 
-    // Disable this site.
-    disableSite: () => {
+    // Disable payment on this site.
+    disablePayment: () => {
         WebMonetization.removeMonetizationTag();
         if (WebMonetization.siteIsEnabled()) {
             const enabledSites = WebMonetization.getEnabledSites();

@@ -7,25 +7,25 @@ document.addEventListener('DOMContentLoaded', function() {
     enableButton.forEach(el => el.style.display = 'none');
     disableButton.forEach(el => el.style.display = 'none');
 
-    const enableMonetization = () => {
-        WebMonetization.enableSite();
+    const enablePayment = () => {
+        WebMonetization.enablePayment();
         enableButton.forEach(el => el.style.display = 'none');
         disableButton.forEach(el => el.style.display = 'inline');
     }
-    const disableMonetization = () => {
-        WebMonetization.disableSite();
+    const disablePayment = () => {
+        WebMonetization.disablePayment();
         enableButton.forEach(el => el.style.display = 'inline');
         disableButton.forEach(el => el.style.display = 'none');
     };
 
     document.addEventListener('click', e => {
         if (e.target.classList.contains('web-monetization-enable')) {
-            enableMonetization();
+            enablePayment();
         }
     });
     document.addEventListener('click', e => {
         if (e.target.classList.contains('web-monetization-disable')) {
-            disableMonetization();
+            disablePayment();
         }
     });
 
