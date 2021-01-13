@@ -1,3 +1,14 @@
+// Initialize web monetization.
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.monetization) {
+        // Uncomment this to initialize testing.
+        //~ WebMonetization.initTesting();
+    }
+    if (document.monetization && WebMonetization.siteIsEnabled()) {
+        WebMonetization.enableSite();
+    }
+});
+
 const WebMonetization = {
 
     siteId: null,
@@ -120,45 +131,3 @@ const WebMonetization = {
         });
     }
 };
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    const startButton = document.querySelectorAll('.web-monetization-start');
-    const stopButton = document.querySelectorAll('.web-monetization-stop');
-
-    startButton.forEach(el => el.style.display = 'none');
-    stopButton.forEach(el => el.style.display = 'none');
-
-    const startMonetization = () => {
-        WebMonetization.enableSite();
-        startButton.forEach(el => el.style.display = 'none');
-        stopButton.forEach(el => el.style.display = 'inline');
-    }
-    const stopMonetization = () => {
-        WebMonetization.disableSite();
-        startButton.forEach(el => el.style.display = 'inline');
-        stopButton.forEach(el => el.style.display = 'none');
-    };
-
-    document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-start')) {
-            startMonetization();
-        }
-    });
-    document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-stop')) {
-            stopMonetization();
-        }
-    });
-
-    if (document.monetization) {
-        // The site is monetized.
-        WebMonetization.initTesting();
-        if (WebMonetization.siteIsEnabled()) {
-            WebMonetization.enableSite();
-            stopButton.forEach(el => el.style.display = 'inline');
-        } else {
-            startButton.forEach(el => el.style.display = 'inline');
-        }
-    }
-});

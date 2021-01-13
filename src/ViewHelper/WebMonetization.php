@@ -20,6 +20,7 @@ class WebMonetization extends AbstractHelper
         if (!$paymentPointer) {
             return;
         }
+        return $view->partial('common/web-monetization-control');
         return sprintf(
             '<div class="web-monetization">
                 <button class="web-monetization-start">%s</button>
