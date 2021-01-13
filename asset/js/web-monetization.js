@@ -125,11 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const startButton = document.querySelectorAll('.web-monetization-start');
     const stopButton = document.querySelectorAll('.web-monetization-stop');
-    const notEnabledSpan = document.querySelectorAll('.web-monetization-disabled');
 
     startButton.forEach(el => el.style.display = 'none');
     stopButton.forEach(el => el.style.display = 'none');
-    notEnabledSpan.forEach(el => el.style.display = 'none');
 
     const startMonetization = () => {
         WebMonetization.enableSite();
@@ -162,8 +160,5 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             startButton.forEach(el => el.style.display = 'inline');
         }
-    } else {
-        // The site is not monetized.
-        notEnabledSpan.forEach(el => el.style.display = 'inline');
     }
 });
