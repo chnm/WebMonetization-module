@@ -14,26 +14,28 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
+        $services = $this->getServiceLocator();
+
         $sharedEventManager->attach(
             'Omeka\Form\SiteSettingsForm',
             'form.add_elements',
             [$this, 'addSiteSettings']
         );
-        // All public controllers.
-        $controllers = [
-            'Omeka\Controller\Site\Index',
-            'Omeka\Controller\Site\Item',
-            'Omeka\Controller\Site\ItemSet',
-            'Omeka\Controller\Site\Media',
-            'Omeka\Controller\Site\Page',
-            'Omeka\Controller\Site\CrossSiteSearch',
-        ];
+
+        // Apply web monetization to all public site controllers.
+        $config = $services->get('Config');
+        $controllers = array_merge(
+            array_keys($config['controllers']['invokables']),
+            array_keys($config['controllers']['factories'])
+        );
         foreach ($controllers as $controller) {
-            $sharedEventManager->attach(
-                $controller,
-                'view.layout',
-                [$this, 'addToLayout']
-            );
+            if (false !== strpos($controller, '\Controller\Site\\')) {
+                $sharedEventManager->attach(
+                    $controller,
+                    'view.layout',
+                    [$this, 'applyWebMonetization']
+                );
+            }
         }
     }
 
@@ -70,16 +72,19 @@ class Module extends AbstractModule
         ]);
     }
 
-    public function addToLayout(Event $event)
+    public function applyWebMonetization(Event $event)
     {
         $view = $event->getTarget();
         $paymentPointer = $view->siteSetting('web_monetization_payment_pointer');
         if (!$paymentPointer) {
             return;
         }
+        // Append the web monetization script and provide the needed variables.
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization.js', 'WebMonetization'));
-        $view->headScript()->appendScript(sprintf(
-            'WebMonetization.siteId = %s; WebMonetization.paymentPointer = "%s"; WebMonetization.enableByDefault = %s;',
+        $view->headScript()->appendScript(sprintf('
+            WebMonetization.siteId = %s;
+            WebMonetization.paymentPointer = "%s";
+            WebMonetization.enableByDefault = %s;',
             $view->escapeJs($view->layout()->site->id()),
             $view->escapeJs($paymentPointer),
             $view->escapeJs($view->siteSetting('web_monetization_enable_by_default') ? 'true' : 'false')
