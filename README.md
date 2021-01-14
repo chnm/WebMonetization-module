@@ -1,8 +1,12 @@
 # Web Monetization
 
-An [Omeka S](https://omeka.org/s/) module that enables micro-donations on your sites.
+An [Omeka S](https://omeka.org/s/) module that enables streaming micropayments on your sites.
 
 When cloning this repository remember to rename the directory from "WebMonetization-module" to "WebMonetization".
+
+# Enabling Payment
+
+To start payment, a user must get a [Coil membership](https://coil.com/) for $5 per month, install the [Coil Extension or the Puma Browser app](https://help.coil.com/docs/membership/coil-extension/), and log in to Coil. Click [here](https://coil.com/about) to learn more about Coil.
 
 # Monetizing Your Site
 
