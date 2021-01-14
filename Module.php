@@ -79,8 +79,9 @@ class Module extends AbstractModule
         if (!$paymentPointer) {
             return;
         }
-        // Append the web monetization script and provide the needed variables.
+        // Append the web monetization scripts and provide the needed variables.
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization.js', 'WebMonetization'));
+        $view->headScript()->appendFile($view->assetUrl('js/web-monetization-control.js', 'WebMonetization'));
         $view->headScript()->appendScript(sprintf('
             WebMonetization.siteId = %s;
             WebMonetization.paymentPointer = "%s";
