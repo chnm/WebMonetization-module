@@ -4,8 +4,22 @@ An [Omeka S](https://omeka.org/s/) module that enables micro-donations on your s
 
 When cloning this repository remember to rename the directory from "WebMonetization-module" to "WebMonetization".
 
-# Documentation
+# Monetizing Your Site
 
 To monetize your site, go to your site settings and under "Web Monetization" add your [payment pointer](https://webmonetization.org/docs/ilp-wallets/). Payment is disabled by default, but you can configure it to be enabled by default.
 
-You should then edit a page and add a "Web monetization" block. Now, when you view this page on the public site, you'll see a control that users may use to start or stop payment. This control will only appear if the user is using a supported browser (using [Coil](https://coil.com/) or [Puma](https://www.pumabrowser.com/)).
+You can then edit any page and add a "Web monetization" block. Now, when you view the page on the public site, you'll see a control that users may use to start or stop payment. This control will only appear if the user is using a supported browser (using [Coil](https://coil.com/) or [Puma](https://www.pumabrowser.com/)).
+
+# Customizing the Payment Control
+
+We designed the payment control for general purpose use. It's available via a page block as a simple toggle button that allows users to start or stop payment. If this is not sufficient, you can customize the control by modifying the copy, markup, and JavaScript yourself.
+
+You can add the control anywhere in your site by using a provided view helper. For instance, if you want it to render on every page, open your theme's layout template and add the following:
+
+```php
+<?php echo $this->webMonetization()->control(); ?>
+```
+
+You can modify the control's copy and markup by editing the template file: `WebMonetization/view/common/web-monetization-control.phtml`
+
+You can modify the control's functionality by editing the JS file: `WebMonetization/asset/js/web-monetization-control.js`. You should use the provided `WebMonetization` object to power it: `WebMonetization/asset/js/web-monetization.js`.
