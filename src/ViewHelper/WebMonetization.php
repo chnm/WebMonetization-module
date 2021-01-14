@@ -21,13 +21,5 @@ class WebMonetization extends AbstractHelper
             return;
         }
         return $view->partial('common/web-monetization-control');
-        return sprintf(
-            '<div class="web-monetization">
-                <button class="web-monetization-start">%s</button>
-                <button class="web-monetization-stop">%s</button>
-            </div>',
-            $view->translate('Start web monetization'),
-            $view->translate('Stop web monetization')
-        );
     }
 }
