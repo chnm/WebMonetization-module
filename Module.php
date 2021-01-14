@@ -90,5 +90,6 @@ class Module extends AbstractModule
             $view->escapeJs($paymentPointer),
             $view->escapeJs($view->siteSetting('web_monetization_enable_by_default') ? 'true' : 'false')
         ));
+        $view->headLink()->appendStylesheet($view->assetUrl('css/web-monetization-control.css', 'WebMonetization'));
     }
 }

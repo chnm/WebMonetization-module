@@ -16,7 +16,7 @@ You can then edit any page and add a "Web monetization" block. Now, when you vie
 
 # Customizing the Payment Control
 
-We designed the payment control for general purpose use. It's available via a page block as a simple toggle button that allows users to start or stop payment. If this is not sufficient, you can customize the control by modifying the copy, markup, and JavaScript yourself.
+We designed the payment control for general purpose use. It's available via a page block as a simple toggle button that allows users to start or stop payment. If this is not sufficient, you can customize the control by modifying the copy, markup, stylesheet, and JavaScript yourself.
 
 You can add the control anywhere in your site by using a provided view helper. For instance, if you want it to render on every page, open your theme's layout template and add the following:
 
@@ -24,6 +24,10 @@ You can add the control anywhere in your site by using a provided view helper. F
 <?php echo $this->webMonetization()->control(); ?>
 ```
 
-You can modify the control's copy and markup by editing the template file: `WebMonetization/view/common/web-monetization-control.phtml`
+You can modify the control's copy and markup by editing the template file: `WebMonetization/view/web-monetization-control.phtml`.
+
+You can modify the control's styles by editing the stylesheet: `WebMonetization/asset/css/web-monetization-control.css`.
 
 You can modify the control's functionality by editing the JS file: `WebMonetization/asset/js/web-monetization-control.js`. You should use the provided `WebMonetization` object to power it: `WebMonetization/asset/js/web-monetization.js`.
+
+If you've modified these files, make sure you make backups before upgrading the module.

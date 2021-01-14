@@ -20,6 +20,6 @@ class WebMonetization extends AbstractHelper
         if (!$paymentPointer) {
             return;
         }
-        return $view->partial('common/web-monetization-control');
+        return $view->partial('web-monetization-control');
     }
 }
