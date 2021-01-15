@@ -2,8 +2,8 @@
 namespace WebMonetization;
 
 use Omeka\Module\AbstractModule;
-use Laminas\EventManager\Event;
-use Laminas\EventManager\SharedEventManagerInterface;
+use Zend\EventManager\Event;
+use Zend\EventManager\SharedEventManagerInterface;
 
 class Module extends AbstractModule
 {

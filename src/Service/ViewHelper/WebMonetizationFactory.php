@@ -3,7 +3,7 @@ namespace WebMonetization\Service\ViewHelper;
 
 use WebMonetization\ViewHelper\WebMonetization;
 use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class WebMonetizationFactory implements FactoryInterface
 {

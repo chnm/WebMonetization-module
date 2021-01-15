@@ -1,8 +1,8 @@
 <?php
 namespace WebMonetization\ViewHelper;
 
-use Laminas\ServiceManager\ServiceLocatorInterface;
-use Laminas\View\Helper\AbstractHelper;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Helper\AbstractHelper;
 
 class WebMonetization extends AbstractHelper
 {
