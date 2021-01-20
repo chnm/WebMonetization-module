@@ -1,6 +1,8 @@
 // Handle the web monetization control.
 document.addEventListener('DOMContentLoaded', function() {
 
+    WebMonetization.init();
+
     const enableButton = document.querySelectorAll('.web-monetization-enable');
     const disableButton = document.querySelectorAll('.web-monetization-disable');
 
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (document.monetization) {
-        if (WebMonetization.siteIsEnabled()) {
+        if (WebMonetization.isEnabled()) {
             disableButton.forEach(el => el.style.display = 'inline');
         } else {
             enableButton.forEach(el => el.style.display = 'inline');

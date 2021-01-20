@@ -1,28 +1,28 @@
-document.addEventListener('DOMContentLoaded', function() {
-    WebMonetization.init();
-});
-
 const WebMonetization = {
 
-    // The current site ID
-    siteId: null,
-    // The configured payment pointer
+    // The current path. While a URL path is the conventional way to identify
+    // whether the current page is monetized, it could be any string that
+    // identifies the page in the current URL's origin.
+    path: null,
+
+    // The payment pointer.
     paymentPointer: null,
-    // Whether to enble payment by default
+
+    // Whether to enble payment by default.
     enableByDefault: false,
-    // The monetization meta tag
+
+    // The monetization meta tag.
     monetizationTag: null,
-    // An array of site IDs where payment has been enabled
-    enabledSites: null,
-    // An array of site IDs where payment has been disabled
-    disabledSites: null,
+
+    // An array of unique IDs where payment has been enabled.
+    enabled: null,
+
+    // An array of unique IDs where payment has been disabled.
+    disabled: null,
 
     // Initialize web monetization.
     init: () => {
-        if (document.monetization) {
-            // WebMonetization.initTesting(); // uncomment to init testing
-        }
-        if (document.monetization && WebMonetization.siteIsEnabled()) {
+        if (document.monetization && WebMonetization.isEnabled()) {
             WebMonetization.enablePayment();
         }
     },
@@ -44,99 +44,101 @@ const WebMonetization = {
         WebMonetization.monetizationTag.remove();
     },
 
-    // Get the sites where payment has been enabled by the client.
-    getEnabledSites: () => {
-        if (Array.isArray(WebMonetization.enabledSites)) {
-            return WebMonetization.enabledSites;
+    // Get the paths where payment has been enabled by the client.
+    getEnabled: () => {
+        if (Array.isArray(WebMonetization.enabled)) {
+            return WebMonetization.enabled;
         }
-        let enabledSites = JSON.parse(localStorage.getItem('omeka_web_monetization_enabled_sites'));
-        if (!Array.isArray(enabledSites)) {
-             enabledSites = [];
+        let enabled = JSON.parse(localStorage.getItem('web_monetization_enabled'));
+        if (!Array.isArray(enabled)) {
+             enabled = [];
         }
-        WebMonetization.enabledSites = enabledSites;
-        return enabledSites;
+        WebMonetization.enabled = enabled;
+        return enabled;
     },
 
-    // Get the sites where payment has been disabled by the client.
-    getDisabledSites: () => {
-        if (Array.isArray(WebMonetization.disabledSites)) {
-            return WebMonetization.disabledSites;
+    // Get the paths where payment has been disabled by the client.
+    getDisabled: () => {
+        if (Array.isArray(WebMonetization.disabled)) {
+            return WebMonetization.disabled;
         }
-        let disabledSites = JSON.parse(localStorage.getItem('omeka_web_monetization_disabled_sites'));
-        if (!Array.isArray(disabledSites)) {
-             disabledSites = [];
+        let disabled = JSON.parse(localStorage.getItem('web_monetization_disabled'));
+        if (!Array.isArray(disabled)) {
+             disabled = [];
         }
-        WebMonetization.disabledSites = disabledSites;
-        return disabledSites;
+        WebMonetization.disabled = disabled;
+        return disabled;
     },
 
-    // Is the current site enabled for payment?
-    siteIsEnabled: () => {
-        if (WebMonetization.enableByDefault && !WebMonetization.siteIsDisabled()) {
+    // Is the current path enabled for payment?
+    isEnabled: () => {
+        if (WebMonetization.enableByDefault && !WebMonetization.isDisabled()) {
             // Here we return true because payment is enabled by default and the
             // client hasn't already disabled payment.
             return true;
         }
-        return WebMonetization.getEnabledSites().includes(WebMonetization.siteId);
+        return WebMonetization.getEnabled().includes(WebMonetization.path);
     },
 
-    // Is the current site disabled for payment?
-    siteIsDisabled: () => {
-        return WebMonetization.getDisabledSites().includes(WebMonetization.siteId);
+    // Is the current path disabled for payment?
+    isDisabled: () => {
+        return WebMonetization.getDisabled().includes(WebMonetization.path);
     },
 
-    // Enable payment on this site.
+    // Enable payment.
     enablePayment: () => {
         WebMonetization.addMonetizationTag();
-        if (!WebMonetization.siteIsEnabled()) {
-            const enabledSites = WebMonetization.getEnabledSites();
-            enabledSites.push(WebMonetization.siteId);
-            localStorage.setItem('omeka_web_monetization_enabled_sites', JSON.stringify(enabledSites));
+        if (!WebMonetization.isEnabled()) {
+            const enabled = WebMonetization.getEnabled();
+            enabled.push(WebMonetization.path);
+            localStorage.setItem('web_monetization_enabled', JSON.stringify(enabled));
         }
-        if (WebMonetization.siteIsDisabled()) {
-            const disabledSites = WebMonetization.getDisabledSites();
-            disabledSites.splice(disabledSites.indexOf(WebMonetization.siteId), 1);
-            localStorage.setItem('omeka_web_monetization_disabled_sites', JSON.stringify(disabledSites));
+        if (WebMonetization.isDisabled()) {
+            const disabled = WebMonetization.getDisabled();
+            disabled.splice(disabled.indexOf(WebMonetization.path), 1);
+            localStorage.setItem('web_monetization_disabled', JSON.stringify(disabled));
         }
     },
 
-    // Disable payment on this site.
+    // Disable payment.
     disablePayment: () => {
         WebMonetization.removeMonetizationTag();
-        if (WebMonetization.siteIsEnabled()) {
-            const enabledSites = WebMonetization.getEnabledSites();
-            enabledSites.splice(enabledSites.indexOf(WebMonetization.siteId), 1);
-            localStorage.setItem('omeka_web_monetization_enabled_sites', JSON.stringify(enabledSites));
+        if (WebMonetization.isEnabled()) {
+            const enabled = WebMonetization.getEnabled();
+            enabled.splice(enabled.indexOf(WebMonetization.path), 1);
+            localStorage.setItem('web_monetization_enabled', JSON.stringify(enabled));
         }
-        if (!WebMonetization.siteIsDisabled()) {
-            const disabledSites = WebMonetization.getDisabledSites();
-            disabledSites.push(WebMonetization.siteId);
-            localStorage.setItem('omeka_web_monetization_disabled_sites', JSON.stringify(disabledSites));
+        if (!WebMonetization.isDisabled()) {
+            const disabled = WebMonetization.getDisabled();
+            disabled.push(WebMonetization.path);
+            localStorage.setItem('web_monetization_disabled', JSON.stringify(disabled));
         }
     },
 
-    // Initialize testing. Use this function for testing purposes only.
-    initTesting: () => {
-        document.monetization.addEventListener('monetizationstop', e => {
-            console.log(document.monetization.state, e);
-        });
-        document.monetization.addEventListener('monetizationpending', e => {
-            console.log(document.monetization.state, e);
-        });
-        document.monetization.addEventListener('monetizationstart', e => {
-            console.log(document.monetization.state, e);
-        });
-        let scale;
-        let total = 0;
-        document.monetization.addEventListener('monetizationprogress', e => {
-            console.log(document.monetization.state, e);
-            if (total === 0) {
-                scale = e.detail.assetScale;
-                console.log(e.detail.assetCode);
-            }
-            total += Number(e.detail.amount);
-            const formatted = (total * Math.pow(10, -scale)).toFixed(scale);
-            console.log(formatted);
-        });
+    // Enable testing.
+    enableTesting: () => {
+        if (document.monetization) {
+            document.monetization.addEventListener('monetizationstop', e => {
+                console.log(document.monetization.state, e);
+            });
+            document.monetization.addEventListener('monetizationpending', e => {
+                console.log(document.monetization.state, e);
+            });
+            document.monetization.addEventListener('monetizationstart', e => {
+                console.log(document.monetization.state, e);
+            });
+            let scale;
+            let total = 0;
+            document.monetization.addEventListener('monetizationprogress', e => {
+                console.log(document.monetization.state, e);
+                if (total === 0) {
+                    scale = e.detail.assetScale;
+                    console.log(e.detail.assetCode);
+                }
+                total += Number(e.detail.amount);
+                const formatted = (total * Math.pow(10, -scale)).toFixed(scale);
+                console.log(formatted);
+            });
+        }
     }
 };

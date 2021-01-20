@@ -83,10 +83,11 @@ class Module extends AbstractModule
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization.js', 'WebMonetization'));
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization-control.js', 'WebMonetization'));
         $view->headScript()->appendScript(sprintf('
-            WebMonetization.siteId = %s;
+            WebMonetization.path = "%s";
             WebMonetization.paymentPointer = "%s";
             WebMonetization.enableByDefault = %s;',
-            $view->escapeJs($view->layout()->site->id()),
+            // The "site" route is the same site-wide, so all pages are covered.
+            $view->escapeJs($view->url('site', [], true)),
             $view->escapeJs($paymentPointer),
             $view->escapeJs($view->siteSetting('web_monetization_enable_by_default') ? 'true' : 'false')
         ));
