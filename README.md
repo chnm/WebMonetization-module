@@ -31,3 +31,13 @@ You can modify the control's styles by editing the stylesheet: `WebMonetization/
 You can modify the control's functionality by editing the JS file: `WebMonetization/asset/js/web-monetization-control.js`. You should use the provided `WebMonetization` object to power it: `WebMonetization/asset/js/web-monetization.js`.
 
 If you've modified these files, make sure you make backups before upgrading the module.
+
+# How It Works and Repurposing
+
+The JavaScript used for this module is written in a way that can be repurposed for uses outside of Omeka S. Here's a generic rundown of how this module enables monetization.
+
+Load the `WebMonetization` JS object and the custom JS that powers the payment control, which should begin with `WebMonetization.init()`. Then set the necessary `WebMonetization` properties:
+
+- `WebMonetization.paymentPointer`: The payment pointer.
+- `WebMonetization.enableByDefault`: Whether to enble payment by default (false by default).
+- `WebMonetization.path`: The current path. While a URL path is the conventional way to identify whether the current page is monetized, it could be any string that identifies the page in the current URL's origin.
