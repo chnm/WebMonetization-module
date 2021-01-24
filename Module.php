@@ -80,17 +80,11 @@ class Module extends AbstractModule
             return;
         }
         // Append the web monetization scripts and provide the needed variables.
+        $view->headLink()->appendStylesheet($view->assetUrl('css/web-monetization-control.css', 'WebMonetization'));
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization.js', 'WebMonetization'));
         $view->headScript()->appendFile($view->assetUrl('js/web-monetization-control.js', 'WebMonetization'));
-        $view->headScript()->appendScript(sprintf('
-            WebMonetization.path = "%s";
-            WebMonetization.paymentPointer = "%s";
-            WebMonetization.enableByDefault = %s;',
-            // The "site" route is the same site-wide, so all pages are covered.
-            $view->escapeJs($view->url('site', [], true)),
-            $view->escapeJs($paymentPointer),
-            $view->escapeJs($view->siteSetting('web_monetization_enable_by_default') ? 'true' : 'false')
-        ));
-        $view->headLink()->appendStylesheet($view->assetUrl('css/web-monetization-control.css', 'WebMonetization'));
+        $view->headMeta()->appendName('web_monetization_path', $view->url('site', [], true));
+        $view->headMeta()->appendName('web_monetization_payment_pointer', $paymentPointer);
+        $view->headMeta()->appendName('web_monetization_enable_by_default', (bool) $view->siteSetting('web_monetization_enable_by_default'));
     }
 }

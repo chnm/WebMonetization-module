@@ -36,8 +36,16 @@ If you've modified these files, make sure you make backups before upgrading the 
 
 The JavaScript used for this module is written in a way that can be repurposed for uses outside of Omeka S. Here's a generic rundown of how this module enables monetization.
 
-Load the `WebMonetization` JS object and the custom JS that powers the payment control, which should begin with `WebMonetization.init()`. Then set the necessary `WebMonetization` properties:
+Load the `WebMonetization` JS object and the custom JS that powers the payment control. Useful functions to include in your custom JS are:
 
-- `WebMonetization.paymentPointer`: The payment pointer.
-- `WebMonetization.enableByDefault`: Whether to enble payment by default (false by default).
-- `WebMonetization.path`: The current path. While a URL path is the conventional way to identify whether the current page is monetized, it could be any string that identifies the page in the current URL's origin.
+- `WebMonetization.isReady()`: Is monetization ready?
+- `WebMonetization.init()`: Initialize web monetization.
+- `WebMonetization.isEnabled()`: Is the current path enabled for payment?
+- `WebMonetization.enablePayment()`: Enable payment.
+- `WebMonetization.disablePayment()`: Disable payment.
+
+Then, configure web monetization using these meta tags:
+
+- `<meta name="web_monetization_payment_pointer" content="">`: The payment pointer.
+- `<meta name="web_monetization_enable_by_default" content="">`: Whether to enble payment by default (false by default).
+- `<meta name="web_monetization_path" content="">`: The current path. While a URL path is the conventional way to identify whether the current page is monetized, it could be any string that identifies the page in the current URL's origin.

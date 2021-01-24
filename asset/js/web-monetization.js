@@ -22,9 +22,28 @@ const WebMonetization = {
 
     // Initialize web monetization.
     init: () => {
+        // Configure using web_monetization_* meta tags.
+        const metaPath = document.querySelector('meta[name="web_monetization_path"]');
+        const metaPaymentPointer = document.querySelector('meta[name="web_monetization_payment_pointer"]');
+        const metaEnableByDefault = document.querySelector('meta[name="web_monetization_enable_by_default"]');
+        if (metaPath) {
+            WebMonetization.path = metaPath.content;
+        }
+        if (metaPaymentPointer) {
+            WebMonetization.paymentPointer = metaPaymentPointer.content;
+        }
+        if (metaEnableByDefault) {
+            WebMonetization.enableByDefault = metaEnableByDefault.content;
+        }
+        // Enable payment if monetization is ready and payment was already enabled.
         if (document.monetization && WebMonetization.isEnabled()) {
             WebMonetization.enablePayment();
         }
+    },
+
+    // Is monetization ready?
+    isReady: () => {
+        return document.monetization ? true : false;
     },
 
     // Add the web monetization meta tag to the head.
