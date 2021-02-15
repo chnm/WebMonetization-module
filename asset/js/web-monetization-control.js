@@ -1,30 +1,34 @@
 // Handle the web monetization control.
 document.addEventListener('DOMContentLoaded', function() {
 
-    const enableButton = document.querySelectorAll('.web-monetization-enable');
-    const disableButton = document.querySelectorAll('.web-monetization-disable');
+    const startContainer = document.querySelectorAll('.web-monetization-start');
+    const startButton = document.querySelectorAll('.web-monetization-start-button');
+    const stopContainer = document.querySelectorAll('.web-monetization-stop');
+    const stopButton = document.querySelectorAll('.web-monetization-stop-button');
+    const disabledContainer = document.querySelectorAll('.web-monetization-disabled');
 
-    enableButton.forEach(el => el.style.display = 'none');
-    disableButton.forEach(el => el.style.display = 'none');
+    startContainer.forEach(el => el.style.display = 'none');
+    stopContainer.forEach(el => el.style.display = 'none');
+    disabledContainer.forEach(el => el.style.display = 'none');
 
     const enablePayment = () => {
         WebMonetization.enablePayment();
-        enableButton.forEach(el => el.style.display = 'none');
-        disableButton.forEach(el => el.style.display = 'inline');
+        startContainer.forEach(el => el.style.display = 'none');
+        stopContainer.forEach(el => el.style.display = 'inline');
     }
     const disablePayment = () => {
         WebMonetization.disablePayment();
-        enableButton.forEach(el => el.style.display = 'inline');
-        disableButton.forEach(el => el.style.display = 'none');
+        startContainer.forEach(el => el.style.display = 'inline');
+        stopContainer.forEach(el => el.style.display = 'none');
     };
 
     document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-enable')) {
+        if (e.target.classList.contains('web-monetization-start-button')) {
             enablePayment();
         }
     });
     document.addEventListener('click', e => {
-        if (e.target.classList.contains('web-monetization-disable')) {
+        if (e.target.classList.contains('web-monetization-stop-button')) {
             disablePayment();
         }
     });
@@ -32,9 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (WebMonetization.isReady()) {
         WebMonetization.init();
         if (WebMonetization.isEnabled()) {
-            disableButton.forEach(el => el.style.display = 'inline');
+            stopContainer.forEach(el => el.style.display = 'inline');
         } else {
-            enableButton.forEach(el => el.style.display = 'inline');
+            startContainer.forEach(el => el.style.display = 'inline');
         }
+    } else {
+        disabledContainer.forEach(el => el.style.display = 'inline');
     }
 });

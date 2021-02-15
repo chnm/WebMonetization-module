@@ -1,12 +1,17 @@
 <?php
 namespace WebMonetization;
 
+use Omeka\Form\Element\RestoreTextarea;
 use Omeka\Module\AbstractModule;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 
 class Module extends AbstractModule
 {
+    const MESSAGE_MONETIZATION_DISABLED = 'You can support this site by enabling <a href="https://coil.com/">web monetization</a>.';
+    const MESSAGE_SITE_DISABLED = 'Please support this site by turning on micro-donations.';
+    const MESSAGE_SITE_ENABLED = 'Thank you for supporting this site with your micro-donations!';
+
     public function getConfig()
     {
         return include sprintf('%s/config/module.config.php', __DIR__);
@@ -64,12 +69,58 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'web_monetization_enable_by_default',
             'options' => [
-                'label' => 'Enable by default'
+                'label' => 'Enable by default', // @translate
             ],
             'attributes' => [
                 'value' => $form->getSiteSettings()->get('web_monetization_enable_by_default'),
             ],
         ]);
+
+        $element = new RestoreTextarea('web_monetization_message_monetization_disabled');
+        $element
+            ->setLabel('Monetization disabled message') // @translate
+            ->setAttributes([
+                'rows' => '2',
+            ])
+            ->setRestoreButtonText('Restore default message') // @translate
+            ->setValue($form->getSiteSettings()->get('web_monetization_message_monetization_disabled') ?? self::MESSAGE_MONETIZATION_DISABLED)
+            ->setRestoreValue(self::MESSAGE_MONETIZATION_DISABLED);
+        $form->get('web_monetization')->add($element);
+
+        $element = new RestoreTextarea('web_monetization_message_site_disabled');
+        $element
+            ->setLabel('Site disabled message') // @translate
+            ->setAttributes([
+                'rows' => '2',
+            ])
+            ->setRestoreButtonText('Restore default message') // @translate
+            ->setValue($form->getSiteSettings()->get('web_monetization_message_site_disabled') ?? self::MESSAGE_SITE_DISABLED)
+            ->setRestoreValue(self::MESSAGE_SITE_DISABLED);
+        $form->get('web_monetization')->add($element);
+
+        $element = new RestoreTextarea('web_monetization_message_site_enabled');
+        $element
+            ->setLabel('Site disabled message') // @translate
+            ->setAttributes([
+                'rows' => '2',
+            ])
+            ->setRestoreButtonText('Restore default message') // @translate
+            ->setValue($form->getSiteSettings()->get('web_monetization_message_site_enabled') ?? self::MESSAGE_SITE_ENABLED)
+            ->setRestoreValue(self::MESSAGE_SITE_ENABLED);
+        $form->get('web_monetization')->add($element);
+
+        $form->get('web_monetization')->add([
+            'type' => 'text',
+            'name' => 'web_monetization_message_site_enabled',
+            'options' => [
+                'label' => 'Site enabled message', // @translate
+            ],
+            'attributes' => [
+                'value' => $form->getSiteSettings()->get('web_monetization_message_site_enabled') ?? self::MESSAGE_SITE_ENABLED,
+                'placeholder' => self::MESSAGE_SITE_ENABLED,
+            ],
+        ]);
+        $form->get('web_monetization')->add($element);
     }
 
     public function applyWebMonetization(Event $event)
