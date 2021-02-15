@@ -1,0 +1,13 @@
+<?php 
+$this->headLink()->appendStylesheet($this->assetUrl('css/web-monetization-control.css', 'WebMonetization'));
+$this->headScript()->appendFile($this->assetUrl('js/web-monetization.js', 'WebMonetization'));
+$this->headScript()->appendFile($this->assetUrl('js/web-monetization-control.js', 'WebMonetization')); 
+?>
+
+<div id="web-monetization-banner">
+    Please help us sustain projects like this one.
+    <div class="web-monetization inputs">
+    <button class="web-monetization-enable"><?php echo $this->translate('Start payment'); ?></button>
+    <button class="web-monetization-disable"><?php echo $this->translate('Stop payment'); ?></button>
+    </div>
+</div>
