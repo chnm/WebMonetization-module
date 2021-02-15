@@ -75,6 +75,16 @@ class Module extends AbstractModule
                 'value' => $form->getSiteSettings()->get('web_monetization_enable_by_default'),
             ],
         ]);
+        $form->get('web_monetization')->add([
+            'type' => 'checkbox',
+            'name' => 'web_monetization_add_banner',
+            'options' => [
+                'label' => 'Add banner', // @translate
+            ],
+            'attributes' => [
+                'value' => $form->getSiteSettings()->get('web_monetization_add_banner'),
+            ],
+        ]);
 
         $element = new RestoreTextarea('web_monetization_message_monetization_disabled');
         $element
@@ -137,5 +147,10 @@ class Module extends AbstractModule
         $view->headMeta()->appendName('web_monetization_path', $view->url('site', [], true));
         $view->headMeta()->appendName('web_monetization_payment_pointer', $paymentPointer);
         $view->headMeta()->appendName('web_monetization_enable_by_default', (bool) $view->siteSetting('web_monetization_enable_by_default'));
+
+        // Add the banner if configured to do so.
+        if ($view->siteSetting('web_monetization_add_banner')) {
+            echo $view->webMonetization()->control();
+        }
     }
 }

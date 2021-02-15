@@ -1,13 +1,13 @@
 <div class="web-monetization">
-    <div class="web-monetization-start">
+    <div class="web-monetization-start" style="display: none;">
         <?php echo $this->siteSetting('web_monetization_message_site_disabled') ?? \WebMonetization\Module::MESSAGE_SITE_DISABLED; ?>
         <button class="web-monetization-start-button"><?php echo $this->translate('Start donating'); ?></button>
     </div>
-    <div class="web-monetization-stop">
+    <div class="web-monetization-stop" style="display: none;">
         <?php echo $this->siteSetting('web_monetization_message_site_enabled') ?? \WebMonetization\Module::MESSAGE_SITE_ENABLED; ?>
         <button class="web-monetization-stop-button"><?php echo $this->translate('Stop donating'); ?></button>
     </div>
-    <div class="web-monetization-disabled">
+    <div class="web-monetization-disabled" style="display: none;">
         <?php echo $this->siteSetting('web_monetization_message_site_disabled') ?? \WebMonetization\Module::MESSAGE_MONETIZATION_DISABLED; ?>
     </div>
 </div>
