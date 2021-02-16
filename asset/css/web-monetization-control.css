@@ -1,1 +1,29 @@
+.web-monetization > div {
+  display: none;
+}
 
+.web-monetization > div.active{
+  display: inline-block;
+}
+
+body > .web-monetization {
+  background-color: #fff;
+  padding: .5rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+}
+
+body > .web-monetization > div.active {
+  display: inline-flex;
+  align-items: center;
+}
+
+body > .web-monetization button {
+  margin-left: .5rem;
+}
+
+.blocks > .web-monetization button {
+  display: block;
+  margin: .5rem 0;
+}

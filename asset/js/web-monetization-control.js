@@ -15,19 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const stopButton = document.querySelectorAll('.web-monetization-stop-button');
     const disabledContainer = document.querySelectorAll('.web-monetization-disabled');
 
-    startContainer.forEach(el => el.style.display = 'none');
-    stopContainer.forEach(el => el.style.display = 'none');
-    disabledContainer.forEach(el => el.style.display = 'none');
+    startContainer.forEach(el => el.classList.remove('active'));
+    stopContainer.forEach(el => el.classList.remove('active'));
+    disabledContainer.forEach(el => el.classList.remove('active'));
 
     const enablePayment = () => {
         WebMonetization.enablePayment();
-        startContainer.forEach(el => el.style.display = 'none');
-        stopContainer.forEach(el => el.style.display = 'inline');
+        startContainer.forEach(el => el.classList.remove('active'));
+        stopContainer.forEach(el => el.classList.add('active'));
     }
     const disablePayment = () => {
         WebMonetization.disablePayment();
-        startContainer.forEach(el => el.style.display = 'inline');
-        stopContainer.forEach(el => el.style.display = 'none');
+        startContainer.forEach(el => el.classList.add('active'));
+        stopContainer.forEach(el => el.classList.remove('active'));
     };
 
     document.addEventListener('click', e => {
@@ -42,13 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (WebMonetization.isReady()) {
+        console.log(WebMonetization.isEnabled());
         WebMonetization.init();
         if (WebMonetization.isEnabled()) {
-            stopContainer.forEach(el => el.style.display = 'inline');
+            stopContainer.forEach(el => el.classList.add('active'));
         } else {
-            startContainer.forEach(el => el.style.display = 'inline');
+            startContainer.forEach(el => el.classList.add('active'));
         }
     } else {
-        disabledContainer.forEach(el => el.style.display = 'inline');
+        disabledContainer.forEach(el => el.classList.add('active'));
     }
 });
