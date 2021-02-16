@@ -110,7 +110,7 @@ class Module extends AbstractModule
 
         $element = new RestoreTextarea('web_monetization_message_site_enabled');
         $element
-            ->setLabel('Site disabled message') // @translate
+            ->setLabel('Site enabled message') // @translate
             ->setAttributes([
                 'rows' => '2',
             ])
@@ -119,17 +119,6 @@ class Module extends AbstractModule
             ->setRestoreValue(self::MESSAGE_SITE_ENABLED);
         $form->get('web_monetization')->add($element);
 
-        $form->get('web_monetization')->add([
-            'type' => 'text',
-            'name' => 'web_monetization_message_site_enabled',
-            'options' => [
-                'label' => 'Site enabled message', // @translate
-            ],
-            'attributes' => [
-                'value' => $form->getSiteSettings()->get('web_monetization_message_site_enabled') ?? self::MESSAGE_SITE_ENABLED,
-                'placeholder' => self::MESSAGE_SITE_ENABLED,
-            ],
-        ]);
         $form->get('web_monetization')->add($element);
     }
 
@@ -150,7 +139,10 @@ class Module extends AbstractModule
 
         // Add the banner if configured to do so.
         if ($view->siteSetting('web_monetization_add_banner')) {
-            echo $view->webMonetization()->control();
+            $view->htmlElement('body')->appendAttribute(
+                'data-web-monetization-banner',
+                $view->webMonetization()->control()
+            );
         }
     }
 }

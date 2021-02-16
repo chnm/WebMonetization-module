@@ -1,6 +1,14 @@
 // Handle the web monetization control.
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Insert the banner just above the header element.
+    if (document.body.dataset.webMonetizationBanner) {
+        document.getElementsByTagName('header')[0].insertAdjacentHTML(
+            'beforebegin',
+            document.body.dataset.webMonetizationBanner
+        );
+    }
+
     const startContainer = document.querySelectorAll('.web-monetization-start');
     const startButton = document.querySelectorAll('.web-monetization-start-button');
     const stopContainer = document.querySelectorAll('.web-monetization-stop');
