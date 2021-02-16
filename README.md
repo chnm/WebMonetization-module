@@ -12,11 +12,22 @@ To start payment, a user must get a [Coil membership](https://coil.com/) for $5 
 
 To monetize your site, go to your site settings and under "Web Monetization" add your [payment pointer](https://webmonetization.org/docs/ilp-wallets/). Payment is disabled by default, but you can configure it to be enabled by default.
 
-You can then edit any page and add a "Web monetization" block. Now, when you view the page on the public site, you'll see a control that users may use to start or stop payment. This control will only appear if the user is using a supported browser (using [Coil](https://coil.com/) or [Puma](https://www.pumabrowser.com/)).
+You can then edit any page and add a "Web monetization" block. Now, when you view the page on the public site, you'll see a control that users may use to start or stop payment. In site settings, you can also add a banner that contains the control on every page of your site. This control will only appear if the user is using a supported browser (using [Coil](https://coil.com/) or [Puma](https://www.pumabrowser.com/)).
+
+# Configuration Options
+
+These configuration options are available in your site settings, under "Web Monetization":
+
+- **Payment pointer**: The public address for your wallet, provided by your wallet provider.
+- **Enable by default**: Check this to enable payment by default.
+- **Add banner**: Check this to add a payment banner to every page of your site.
+- **Monetization disabled message**: Display this text when monetization is not enabled in the browser. Clear to display nothing.
+- **Site disabled message**: Display this text when payment is disabled/stopped in the browser. Clear to display nothing.
+- **Site enabled message**: Display this text when payment is enabled/started in the browser. Clear to display nothing.
 
 # Customizing the Payment Control
 
-We designed the payment control for general purpose use. It's available via a page block as a simple toggle button that allows users to start or stop payment. If this is not sufficient, you can customize the control by modifying the copy, markup, stylesheet, and JavaScript yourself.
+We designed the payment control for general purpose use. It's available via a page block as a simple toggle button that allows users to start or stop payment. If this is not sufficient, you can customize the control by either [overriding](https://omeka.org/s/docs/developer/themes/theme_modifications/#overriding-default-templates) the template, stylesheet, and script, or by modifying them directly.
 
 You can add the control anywhere in your site by using a provided view helper. For instance, if you want it to render on every page, open your theme's layout template and add the following:
 
