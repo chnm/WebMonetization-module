@@ -19,7 +19,7 @@ You can then edit any page and add a "Web monetization" block. Now, when you vie
 These configuration options are available in your site settings, under "Web Monetization":
 
 - **Payment pointer**: The public address for your wallet, provided by your wallet provider.
-- **Enable by default**: Check this to enable payment by default.
+- **Payments turned on by default**: Check this to enable payment by default.
 - **Add banner**: Check this to add a payment banner to every page of your site.
 - **Monetization disabled message**: Display this text when monetization is not enabled in the browser. Clear to display nothing.
 - **Site disabled message**: Display this text when payment is disabled/stopped in the browser. Clear to display nothing.

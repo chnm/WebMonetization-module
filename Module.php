@@ -69,7 +69,7 @@ class Module extends AbstractModule
             'type' => 'checkbox',
             'name' => 'web_monetization_enable_by_default',
             'options' => [
-                'label' => 'Enable by default', // @translate
+                'label' => 'Payments turned on by default', // @translate
             ],
             'attributes' => [
                 'value' => $form->getSiteSettings()->get('web_monetization_enable_by_default'),
