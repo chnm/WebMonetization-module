@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-23 12:34-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: view/web-monetization-control.phtml:4
+msgid "Start donating"
+msgstr ""
+
+#: view/web-monetization-control.phtml:8
+msgid "Stop donating"
+msgstr ""
+
+#: Module.php:11
+msgid ""
+"You can support this site by enabling <a href=\"https://coil.com/\">web "
+"monetization</a>."
+msgstr ""
+
+#: Module.php:12
+msgid "Please support this site by turning on micro-donations."
+msgstr ""
+
+#: Module.php:13
+msgid "Thank you for supporting this site with your micro-donations!"
+msgstr ""
+
+#: Module.php:54
+msgid "Web Monetization"
+msgstr ""
+
+#: Module.php:61
+msgid "Payment pointer"
+msgstr ""
+
+#: Module.php:72
+msgid "Payments turned on by default"
+msgstr ""
+
+#: Module.php:82
+msgid "Add banner"
+msgstr ""
+
+#: Module.php:91
+msgid "Monetization disabled message"
+msgstr ""
+
+#: Module.php:95 Module.php:106 Module.php:117
+msgid "Restore default message"
+msgstr ""
+
+#: Module.php:102
+msgid "Site disabled message"
+msgstr ""
+
+#: Module.php:113
+msgid "Site enabled message"
+msgstr ""
+
+#: src/BlockLayout/WebMonetization.php:14
+msgid "Web monetization"
+msgstr ""

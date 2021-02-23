@@ -8,9 +8,9 @@ use Zend\EventManager\SharedEventManagerInterface;
 
 class Module extends AbstractModule
 {
-    const MESSAGE_MONETIZATION_DISABLED = 'You can support this site by enabling <a href="https://coil.com/">web monetization</a>.';
-    const MESSAGE_SITE_DISABLED = 'Please support this site by turning on micro-donations.';
-    const MESSAGE_SITE_ENABLED = 'Thank you for supporting this site with your micro-donations!';
+    const MESSAGE_MONETIZATION_DISABLED = 'You can support this site by enabling <a href="https://coil.com/">web monetization</a>.'; // @translate
+    const MESSAGE_SITE_DISABLED = 'Please support this site by turning on micro-donations.'; // @translate
+    const MESSAGE_SITE_ENABLED = 'Thank you for supporting this site with your micro-donations!'; // @translate
 
     public function getConfig()
     {
@@ -58,7 +58,7 @@ class Module extends AbstractModule
             'type' => 'text',
             'name' => 'web_monetization_payment_pointer',
             'options' => [
-                'label' => 'Payment pointer'
+                'label' => 'Payment pointer', // @translate
             ],
             'attributes' => [
                 'value' => $form->getSiteSettings()->get('web_monetization_payment_pointer'),
